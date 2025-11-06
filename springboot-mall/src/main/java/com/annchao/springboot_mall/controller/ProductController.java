@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.annchao.springboot_mall.constant.ProductCategory;
 import com.annchao.springboot_mall.dto.ProductRequest;
 import com.annchao.springboot_mall.model.product;
 import com.annchao.springboot_mall.service.ProductService;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 
+
+
 @RestController
 public class ProductController {
     
@@ -35,9 +38,12 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<product>> getProducts() {
+    public ResponseEntity<List<product>> getProducts(
+        @RequestParam(required = false) ProductCategory category,
+        @RequestParam(required = false) String search
+    ) {
         // For now, just return an empty list
-        List<product> productList = productService.getProducts();
+        List<product> productList = productService.getProducts(category, search);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

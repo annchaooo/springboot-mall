@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.annchao.springboot_mall.constant.ProductCategory;
 import com.annchao.springboot_mall.dao.ProductDao;
 import com.annchao.springboot_mall.dto.ProductRequest;
 import com.annchao.springboot_mall.model.product;
@@ -17,9 +18,9 @@ public class ProductServiceImpl implements ProductService{
     private ProductDao productDao;
 
     @Override
-    public List<product> getProducts() {
+    public List<product> getProducts(ProductCategory category, String search) {
         // TODO Auto-generated method stub
-        return productDao.getProducts();
+        return productDao.getProducts(category, search);
 
     }
     @Override
@@ -37,15 +38,10 @@ public class ProductServiceImpl implements ProductService{
         productDao.updateProduct(productId, productRequest); 
     }
 
+
     @Override
     public void deleteProductById(Integer productId) {
         // TODO Auto-generated method stub
         productDao.deleteProductById(productId);
     }
-
-
-    
-
-
-
 }

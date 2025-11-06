@@ -4,11 +4,11 @@ public enum ProductCategory {
     FOOD,
     CAR,
     BOOK,
-    E_BOOKS,
+    E_BOOK,
     CLOTHES,
     ELECTRONICS,
     HOME,
     BEAUTY,
     SPORTS,
-    OTHERS
+    OTHER
 }

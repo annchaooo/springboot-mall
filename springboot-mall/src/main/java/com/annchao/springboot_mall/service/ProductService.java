@@ -1,10 +1,14 @@
 package com.annchao.springboot_mall.service;
+import java.util.List;
+
 import com.annchao.springboot_mall.dto.ProductRequest;
 import com.annchao.springboot_mall.model.product;
 
 
 public interface ProductService {
     // return data type; method name; parameters
+
+    List<product> getProducts();
 
     // Method to get product by its ID
     product getProductById(Integer productId);

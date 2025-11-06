@@ -1,5 +1,7 @@
 package com.annchao.springboot_mall.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -29,6 +33,14 @@ public class ProductController {
     // Injecting ProductService to handle business logic and data retrieval
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products")
+    public ResponseEntity<List<product>> getProducts() {
+        // For now, just return an empty list
+        List<product> productList = productService.getProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
     
     @GetMapping("/products/{productId}")
 
@@ -36,6 +48,8 @@ public class ProductController {
     public ResponseEntity<product> getProductById(@PathVariable Integer productId) {
         // querying product by ID
         product product = productService.getProductById(productId);
+
+        // if product is found, return 200 OK with product data; else return 404 Not Found
         if (product != null) {
             return ResponseEntity.status(HttpStatus.OK).body(product);
         } else {

@@ -23,11 +23,19 @@ public class ProductServiceImpl implements ProductService{
     public Integer createProduct(ProductRequest productRequest) {
         return productDao.createProduct(productRequest);
     }
-
+    @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         // TODO Auto-generated method stub
         productDao.updateProduct(productId, productRequest); 
     }
+
+    @Override
+    public void deleteProductById(Integer productId) {
+        // TODO Auto-generated method stub
+        productDao.deleteProductById(productId);
+    }
+
+    
 
 
 

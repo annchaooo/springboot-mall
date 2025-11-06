@@ -15,4 +15,6 @@ public interface ProductService {
     // Method to update an existing product, void because no need to return anything
     void updateProduct(Integer productId, ProductRequest productRequest);
 
+    void deleteProductById(Integer productId);
+
 }

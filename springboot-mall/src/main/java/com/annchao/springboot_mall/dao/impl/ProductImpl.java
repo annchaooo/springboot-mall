@@ -66,7 +66,6 @@ public class ProductImpl implements ProductDao {
         Integer productId = keyHolder.getKey().intValue();
         return productId;
     }
-x
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
@@ -88,6 +87,14 @@ x
         namedParameterJdbcTemplate.update(sql, map);
     }
 
+    @Override
+    public void deleteProductById(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id = :productId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        namedParameterJdbcTemplate.update(sql, map);
+    }
 
 }
 

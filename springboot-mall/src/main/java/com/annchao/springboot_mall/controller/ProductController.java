@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.annchao.springboot_mall.constant.ProductCategory;
+import com.annchao.springboot_mall.dto.ProductQueryParam;
 import com.annchao.springboot_mall.dto.ProductRequest;
 import com.annchao.springboot_mall.model.product;
 import com.annchao.springboot_mall.service.ProductService;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,10 +40,21 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<product>> getProducts(
         @RequestParam(required = false) ProductCategory category,
-        @RequestParam(required = false) String search
+        @RequestParam(required = false) String search,
+        @RequestParam(defaultValue = "created_date") String orderBy,
+        @RequestParam(defaultValue = "desc") String sort
+
     ) {
+
+        ProductQueryParam productQueryParam = new ProductQueryParam();
+        productQueryParam.setCategory(category);
+        productQueryParam.setSearch(search);
+        productQueryParam.setOrderBy(orderBy);
+        productQueryParam.setSort(sort);
+
+
         // For now, just return an empty list
-        List<product> productList = productService.getProducts(category, search);
+        List<product> productList = productService.getProducts(productQueryParam);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

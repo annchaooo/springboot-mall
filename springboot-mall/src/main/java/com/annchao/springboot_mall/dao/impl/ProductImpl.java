@@ -28,15 +28,7 @@ public class ProductImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         //查詢條件
-        if (productQueryParam.getCategory() != null) {
-            sql += " AND category = :category";
-            map.put("category", productQueryParam.getCategory().name());
-        }
-
-        if (productQueryParam.getSearch() != null) {
-            sql += " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParam.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql, map, productQueryParam);
 
         //Integer.class to convert the result to Integer
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
@@ -54,22 +46,7 @@ public class ProductImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         //查詢條件
-        if (productQueryParam.getCategory() != null) {
-
-            // since we used WHERE 1=1 as dynamic condiction, we directly append to the SQL query
-            // space is important before AND
-            sql += " AND category = :category";
-            //since category is enum, need to convert to string
-            map.put("category", productQueryParam.getCategory().name());
-
-        }
-
-        if (productQueryParam.getSearch() != null) {
-            // 模糊查詢，使用 LIKE 關鍵字
-            // example SELECT * FROM product WHERE 1=1 AND product_name LIKE '%book%'
-            sql += " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParam.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql, map, productQueryParam);
 
         // 排序 Sorting
     
@@ -163,6 +140,24 @@ public class ProductImpl implements ProductDao {
         map.put("productId", productId);
         namedParameterJdbcTemplate.update(sql, map);
     }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParam productQueryParam) {
+        //查詢條件
+        if (productQueryParam.getCategory() != null) {
+            sql += " AND category = :category";
+            map.put("category", productQueryParam.getCategory().name());
+        }
+
+        if (productQueryParam.getSearch() != null) {
+            sql += " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParam.getSearch() + "%");
+        }
+        return sql;
+    }
+
+
+
+
 
 }
 

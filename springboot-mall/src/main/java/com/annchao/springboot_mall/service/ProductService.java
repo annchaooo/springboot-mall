@@ -7,8 +7,10 @@ import com.annchao.springboot_mall.model.product;
 
 
 public interface ProductService {
-    // return data type; method name; parameters
 
+    Integer countProducts(ProductQueryParam productQueryParam);
+
+    // return data type; method name; parameters
     List<product> getProducts(ProductQueryParam productQueryParam);
 
     // Method to get product by its ID

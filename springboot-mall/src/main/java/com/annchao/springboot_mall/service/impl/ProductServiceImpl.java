@@ -21,6 +21,12 @@ public class ProductServiceImpl implements ProductService{
     private ProductDao productDao;
 
     @Override
+    public Integer countProducts(ProductQueryParam productQueryParam) {
+        // TODO Auto-generated method stub
+        return productDao.countProducts(productQueryParam);
+    }
+
+    @Override
     public List<product> getProducts(ProductQueryParam productQueryParam) {
         // TODO Auto-generated method stub
         return productDao.getProducts(productQueryParam);

@@ -21,6 +21,27 @@ import java.util.Map;
 public class ProductImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Override
+    public Integer countProducts(ProductQueryParam productQueryParam) {
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        //查詢條件
+        if (productQueryParam.getCategory() != null) {
+            sql += " AND category = :category";
+            map.put("category", productQueryParam.getCategory().name());
+        }
+
+        if (productQueryParam.getSearch() != null) {
+            sql += " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParam.getSearch() + "%");
+        }
+
+        //Integer.class to convert the result to Integer
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
 
     @Override
     public List<product> getProducts(ProductQueryParam productQueryParam) {
@@ -32,6 +53,7 @@ public class ProductImpl implements ProductDao {
         // using map to hold parameters for the SQL query
         Map<String, Object> map = new HashMap<>();
 
+        //查詢條件
         if (productQueryParam.getCategory() != null) {
 
             // since we used WHERE 1=1 as dynamic condiction, we directly append to the SQL query
@@ -49,8 +71,16 @@ public class ProductImpl implements ProductDao {
             map.put("search", "%" + productQueryParam.getSearch() + "%");
         }
 
+        // 排序 Sorting
+    
         sql += " ORDER BY " + productQueryParam.getOrderBy() + " " + productQueryParam.getSort();
         
+        // 分頁 Paginationㄋ
+        sql += " LIMIT :limit OFFSET :offset";
+
+        // add pagination parameters, to avoid  SQL injection, we use parameterized query
+        map.put("limit", productQueryParam.getLimit());
+        map.put("offset", productQueryParam.getOffset());
 
         List<product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
         return productList;

@@ -10,6 +10,8 @@ import com.annchao.springboot_mall.model.product;
 // 根據產品ID查詢產品
 public interface ProductDao {
 
+    Integer countProducts(ProductQueryParam productQueryParam);
+
     List<product> getProducts(ProductQueryParam productQueryParam);
 
     product getProductId(Integer productId);

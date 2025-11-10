@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.annchao.springboot_mall.dto.UserLoginRequest;
 import com.annchao.springboot_mall.dto.UserRegisterRequest;
 import com.annchao.springboot_mall.model.User;
 import com.annchao.springboot_mall.service.UserService;
@@ -31,6 +32,18 @@ public class UserController {
 
         // 回傳 201 Created 狀態碼與使用者資料
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    //登入功能
+    @PostMapping("users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        // 這裡可以實作登入邏輯，例如驗證使用者帳號密碼
+
+        User user = userService.login(userLoginRequest);
+        // 目前僅回傳 200 OK 狀態碼作為示範
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+        
     }
 
 

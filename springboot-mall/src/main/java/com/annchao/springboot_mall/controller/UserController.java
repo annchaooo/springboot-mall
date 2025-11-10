@@ -13,6 +13,7 @@ import com.annchao.springboot_mall.model.User;
 import com.annchao.springboot_mall.service.UserService;
 
 import jakarta.validation.Valid;
+import java.util.Objects;
 
 @RestController
 public class UserController {

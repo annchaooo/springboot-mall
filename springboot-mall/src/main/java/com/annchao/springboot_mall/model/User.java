@@ -2,10 +2,16 @@ package com.annchao.springboot_mall.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 
     private Integer userId;
+
     private String email;
+
+    @JsonIgnore
     private String password;
     private Date createdDate;
     private Date lastModifiedDate;

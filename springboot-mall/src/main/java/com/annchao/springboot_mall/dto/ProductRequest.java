@@ -4,22 +4,23 @@ package com.annchao.springboot_mall.dto;
 import com.annchao.springboot_mall.constant.ProductCategory;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public class ProductRequest {
 
-    @NonNull
+    @NotNull
     private String productName;
 
-    @NonNull
+    @NotNull
     private ProductCategory category;
 
-    @NonNull
+    @NotNull
     private String imageUrl;
 
-    @NonNull
+    @NotNull
     private Integer price;
 
-    @NonNull
+    @NotNull
     private Integer stock;
     
     private String description;

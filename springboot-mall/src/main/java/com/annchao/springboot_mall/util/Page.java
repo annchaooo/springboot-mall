@@ -4,11 +4,15 @@ import java.util.List;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 public class Page<T> {
 
+    @NotNull
     private Integer limit;
+    @NotNull
     private Integer offset;
+    @NotNull
     private Integer total;
 
     // query results from database, deata type is List of generic T

@@ -53,8 +53,8 @@ public class ProductController {
         @RequestParam(defaultValue = "desc") String sort,
 
         //分頁 Pagination
-        @RequestParam(defaultValue = "10") @Max(100) @Min(0) Integer limit,
-        @RequestParam(defaultValue = "0")  @Min(0) Integer offset
+        @RequestParam(defaultValue = "10") @Valid @Max(100) @Min(0) Integer limit,
+        @RequestParam(defaultValue = "0")  @Valid @Min(0) Integer offset
 
     ) {
 
@@ -105,7 +105,7 @@ public class ProductController {
     @PostMapping("/products")
     // Method to create a new product but currently not using product model directly because we want to validate the input data first
     // so we will use ProductRequest DTO instead
-    public ResponseEntity<product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<product> createProduct(@Valid  @RequestBody ProductRequest productRequest) {
         // TODO Auto-generated method stub
         Integer productId = productService.createProduct(productRequest);
 
@@ -115,7 +115,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{productId}")
-    public ResponseEntity<product> updateProduct(@PathVariable Integer productId, @RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<product> updateProduct(@PathVariable Integer productId, @Valid @RequestBody  ProductRequest productRequest) {
         
         // query the product by ID to check if it exists
         product product = productService.getProductById(productId);

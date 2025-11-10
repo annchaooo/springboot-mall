@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class ProductImpl implements ProductDao {
+public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Override

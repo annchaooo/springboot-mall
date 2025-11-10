@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.annchao.springboot_mall.dao.UserDao;
+import com.annchao.springboot_mall.dto.UserLoginRequest;
 import com.annchao.springboot_mall.dto.UserRegisterRequest;
 import com.annchao.springboot_mall.model.User;
 import com.annchao.springboot_mall.rowmapper.UserRowMapper;
@@ -37,6 +38,7 @@ public class UserDaoImpl implements UserDao {
         map.put("password", userRegisterRequest.getPassword());
 
         Date now = new Date(System.currentTimeMillis());
+        map.put("createdDate", now);
         map.put("created_date", now);
         map.put("last_modified_date", now);
 
@@ -85,5 +87,11 @@ public class UserDaoImpl implements UserDao {
             return null;
         }
     
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'login'");
     }
 }

@@ -3,6 +3,7 @@ package com.annchao.springboot_mall.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -30,13 +31,17 @@ public class UserServiceImpl implements UserService {
 
         // 創建 logger instance, local variable can be used here with "final" keyword
 
-        // 檢查註冊的帳號：一組email 只能註冊一個帳號
+        // 檢查註冊的帳號是否存在：一組email 只能註冊一個帳號
         User user = userDao.getUserByEmail(userRegisterRequest.getEmail());
         if (user != null) {
             // 已經有相同email的帳號，無法註冊
             log.warn("該 Email {} 已經被註冊了", userRegisterRequest.getEmail() );
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email already exists");
         }
+
+        // 透過 MD5 生成密碼雜湊值，並且將雜湊值當作密碼處存
+        String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
+        userRegisterRequest.setPassword(hashedPassword);
 
         //創建帳號
         return userDao.createUser(userRegisterRequest);
@@ -60,12 +65,17 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email not found");
 
         }
-        // 檢查密碼是否正確
-        if (!user.getPassword().equals(userLoginRequest.getPassword())) {
+
+        // 透過MD5 生成密碼雜湊值
+        String hashedPassword = DigestUtils.md5DigestAsHex(userLoginRequest.getPassword().getBytes());
+        
+
+        // 檢查密碼是否正確 (根據雜湊過後的密碼)
+        if (!user.getPassword().equals(hashedPassword)) {
 
             log.warn("Email {} 的密碼不正確", userLoginRequest.getEmail() );
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password");
-            
+
         }   else{
             
             log.info("使用者 {} 登入成功", userLoginRequest.getEmail() );

@@ -65,6 +65,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
 
+    
     @Override
     public product getProductId(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +

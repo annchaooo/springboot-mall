@@ -14,7 +14,10 @@ public interface ProductDao {
 
     List<product> getProducts(ProductQueryParam productQueryParam);
 
-    product getProductId(Integer productId);
+    default product getProductId(Integer productId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getProductId'");
+    }
 
     Integer createProduct(ProductRequest productRequest);
 

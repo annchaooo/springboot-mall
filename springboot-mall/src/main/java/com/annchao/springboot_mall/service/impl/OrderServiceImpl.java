@@ -43,11 +43,25 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public Integer countOrders(OrderQueryParam orderQueryParam){
+        
+        User user = userDao.getUserById(orderQueryParam.getUserId());
+        if (user == null){
+            log.warn("User {} 不存在", orderQueryParam.getUserId());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+
         return orderDao.countOrders(orderQueryParam);
     }
 
     @Override
     public List<Order> getOrders(OrderQueryParam orderQueryParam){
+                // 檢查 UserId 是否存在
+        User user = userDao.getUserById(orderQueryParam.getUserId());
+        if (user == null){
+            log.warn("User {} 不存在", orderQueryParam.getUserId());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
         List<Order> orderList = orderDao.getOrders(orderQueryParam);
         

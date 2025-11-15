@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.annchao.springboot_mall.dao.OrderDao;
+import com.annchao.springboot_mall.dto.OrderQueryParam;
 import com.annchao.springboot_mall.model.Order;
 import com.annchao.springboot_mall.model.OrderItem;
 import com.annchao.springboot_mall.model.product;
@@ -27,6 +28,41 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Override
+    public Integer countOrders(OrderQueryParam orderQueryParam){
+        String sql = "SELECT COUNT(*) FROM `order` WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // add filtering conditions if provided in orderQueryParam
+        sql = addFilteringSql(sql, map, orderQueryParam);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return count;
+
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParam orderQueryParam){
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date " +  
+        "FROM `order` WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+        
+        // add filtering conditions if provided in orderQueryParam
+        sql = addFilteringSql(sql, map, orderQueryParam);
+
+        // 排序
+        sql += " ORDER BY created_date DESC";
+        
+        // add pagination
+        sql += " LIMIT :limit OFFSET :offset";
+        map.put("limit", orderQueryParam.getLimit());
+        map.put("offset", orderQueryParam.getOffset()); 
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+        return orderList;
+        }
 
     @Override
     public Order getOrderById(Integer orderId){
@@ -127,6 +163,16 @@ public class OrderDaoImpl implements OrderDao {
         int orderId = keyHolder.getKey().intValue();
         return orderId;
 
+    }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParam orderQueryParam) {
+        // No additional filtering conditions for now
+
+        if (orderQueryParam.getUserId() != null) {
+            sql += " AND user_id = :userId";
+            map.put("userId", orderQueryParam.getUserId());
+        }
+        return sql;
     }
 
 }
